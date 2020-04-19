@@ -54,14 +54,22 @@ def get_users():
       return resp
 
 
-@app.route('/users/<id>')
+@app.route('/users/<id>', methods=['GET', 'DELETE'])
 def get_user(id):
-   if id :
-      for user in users['users_list']:
-        if user['id'] == id:
-           return user
+   if request.method == 'GET':
+      if id :
+         for user in users['users_list']:
+           if user['id'] == id:
+              return user
+         return ({})
+      return users
+   elif request.method == 'DELETE':
+      if id :
+         for i in range(len(users['users_list'])):
+           if users['users_list'][i]['id'] == id:
+              del users['users_list'][i]
+              return users
       return ({})
-   return users
 
 
 @app.route('/')
